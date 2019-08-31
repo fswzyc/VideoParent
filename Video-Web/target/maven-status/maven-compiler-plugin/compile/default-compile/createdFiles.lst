@@ -1,0 +1,7 @@
+com\xcy\video\controller\SpeakerManage.class
+com\xcy\video\controller\UserManage.class
+com\xcy\video\controller\CourseManage.class
+com\xcy\video\controller\VideoManage.class
+com\xcy\video\controller\BeforeSubject.class
+com\xcy\video\exception\MyException.class
+com\xcy\video\controller\Login.class

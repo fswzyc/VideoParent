@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcy.video.mapper.VideoMapper" >
+    <resultMap id="videoMap" type="video">
+        <result column="spearker_id" property="spearkerId"/>
+        <result column="course_id" property="courseId"/>
+        <result column="video_url" property="videoUrl"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="play_num" property="playNum"/>
+    </resultMap>
+    <select id="selectAll" resultMap="videoMap">
+        select video.*,speaker.speaker_name as speakerName from video left join speaker on video.spearker_id = speaker.id
+
+        <where>
+            <if test="title != null and title !=''">
+                and title like '%${title}%'
+            </if>
+            <if test="speakerId != 0">
+                and spearker_id = #{speakerId}
+            </if>
+            <if test="courseId != 0">
+                and course_id = #{courseId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getVideoById" parameterType="int" resultMap="videoMap">
+            select * from video where id = #{id}
+    </select>
+
+    <update id="updateVideoById" parameterType="video">
+       update video
+        set
+          title = #{title},
+          time = #{time},
+          spearker_id = #{spearkerId},
+          course_id = #{courseId},
+          video_url = #{videoUrl},
+          image_url = #{imageUrl},
+          detail = #{detail}
+          where id = #{id}
+    </update>
+
+    <delete id="delete" parameterType="int">
+         delete from video where id = #{id}
+    </delete>
+    
+    <delete id="batchDeleteVideos" parameterType="videoQueryVo">
+        delete from video where
+        <if test="idList != null and idList.size() != 0">
+            <foreach collection="idList" item="sid" open=" id in (" close=")" separator=",">
+                #{sid}
+            </foreach>
+        </if>
+
+    </delete>
+
+    <insert id="saveVideo" parameterType="video" >
+        insert into video (title, detail, time, spearker_id, course_id, video_url, image_url) values
+        (#{title},#{detail},#{time},#{spearkerId},#{courseId},#{videoUrl},#{imageUrl})
+    </insert>
+
+    <select id="selectVideoListByCourseId" parameterType="int" resultMap="videoMap">
+        select * from video where course_id = #{id}
+    </select>
+
+    <select id="showVideo" parameterType="int" resultMap="videoMap">
+        SELECT * from video where id = #{videoId}
+    </select>
+
+    <select id="showVideoList" parameterType="int" resultMap="videoMap">
+        select v.* ,s.speaker_name as speakerName from video v left join speaker s on v.spearker_id = s.id where v.course_id = #{id}
+    </select>
+</mapper>
+

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcy.video.mapper.UserMapper" >
+    <select id="selectUser" parameterType="user" resultType="int">
+        select count(1) from user where email = #{email} and password = #{password}
+    </select>
+
+    <select id="selectEmail" parameterType="user" resultType="int">
+        select count(1) from user where email = #{email}
+    </select>
+
+    <insert id="insertUser" parameterType="user">
+        insert into user (id,email,password) values (null,#{email},#{password})
+    </insert>
+
+    <select id="selectUserByEmail" parameterType="user" resultType="user">
+        select * from user where email = #{email}
+    </select>
+
+    <update id="updateUser" parameterType="user" >
+        update user set nickName = #{nickName}, sex = #{sex}, birthday = #{birthday}, address = #{address} where id = #{id}
+    </update>
+
+    <select id="validatePassword" parameterType="user" resultType="int">
+        select count(1) from user where email = #{email} and password = #{password}
+    </select>
+
+    <update id="updatePassword" parameterType="user">
+        update user set password = #{password} where email = #{email}
+    </update>
+
+    <update id="updateUserImageByEmail" parameterType="User">
+        update user set imgUrl = #{imgUrl} where email = #{email}
+    </update>
+
+    <select id="selectImgByEmail" parameterType="String" resultType="User">
+        select * from user where email = #{email}
+    </select>
+
+    <update id="updateUserValidateCodeByEmail" parameterType="User">
+        update user set code = #{code} where email = #{email}
+    </update>
+
+    <select id="validateEmailCode" parameterType="user" resultType="int">
+        select count(1) from user where email = #{email} and code = #{code}
+    </select>
+
+    <update id="resetPassword" parameterType="User">
+        update user set password = #{password} where email = #{email}
+    </update>
+
+    <update id="updatePalyNum" parameterType="Video" >
+        update video set play_num = #{playNum} where id = #{id}
+    </update>
+
+</mapper>

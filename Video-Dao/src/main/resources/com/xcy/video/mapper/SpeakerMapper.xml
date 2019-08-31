@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xcy.video.mapper.SpeakerMapper" >
+    <resultMap id="speakerMap" type="speaker">
+        <result column="speaker_name" property="speakerName"/>
+        <result column="speaker_desc" property="speakerDesc"/>
+        <result column="speaker_job" property="speakerJob"/>
+        <result column="head_img_url" property="headImgUrl"/>
+    </resultMap>
+    <select id="selectAllSpeaker" resultMap="speakerMap">
+        select * from speaker
+    </select>
+
+    <select id="selectAll" resultMap="speakerMap">
+        select * from speaker limit #{begin} , #{rows}
+    </select>
+
+    <select id="getCount" parameterType="speaker" resultType="int">
+        select count(1) from speaker;
+    </select>
+
+    <select id="getSpeakerById" parameterType="int" resultMap="speakerMap">
+        select * from speaker where id=#{id}
+    </select>
+
+    <delete id="deleteSpeaker" parameterType="int">
+        delete from speaker where id = #{id}
+    </delete>
+
+    <insert id="addSpeaker" parameterType="speaker">
+        insert into speaker(speaker_name, speaker_desc, speaker_job, head_img_url) values
+        (#{speakerName},#{speakerDesc},#{speakerJob},#{headImgUrl})
+    </insert>
+
+    <update id="updateSpeaker" parameterType="speaker">
+        update speaker set
+        speaker_name=#{speakerName},
+        speaker_desc=#{speakerDesc},
+        speaker_job=#{speakerJob},
+        head_img_url=#{headImgUrl}
+        where id=#{id}
+    </update>
+
+    <select id="showSpeaker" parameterType="int" resultMap="speakerMap">
+        select * from speaker where id = (select spearker_id from video where id = #{videoId});
+    </select>
+
+</mapper>
